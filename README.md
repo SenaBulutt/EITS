@@ -34,7 +34,7 @@ Bu sistem; ilaç stok yönetimi, satış işlemleri, kullanıcı yönetimi, hast
 
 ## Proje Yapısı
 
-```text id="8dlk8p"
+```text
 EITS/
 ├── database/        → SQL script dosyaları
 ├── src/             → Uygulama kaynak kodları
@@ -49,7 +49,7 @@ EITS/
 
 ### Sanal ortam oluşturma
 
-```bash id="9yikm4"
+```bash
 # Windows
 python -m venv venv
 
@@ -59,7 +59,7 @@ python3 -m venv venv
 
 ### Sanal ortamı aktifleştirme
 
-```bash id="ylfj8v"
+```bash
 # Windows
 venv\Scripts\activate
 
@@ -69,13 +69,13 @@ source venv/bin/activate
 
 ### Gerekli bağımlılıkları yükleme
 
-```bash id="w72cfi"
+```bash
 pip install -r requirements.txt
 ```
 
 ### Uygulamayı çalıştırma
 
-```bash id="w02f69"
+```bash
 # Windows
 python src/app.py
 
@@ -83,14 +83,12 @@ python src/app.py
 python3 src/app.py
 ```
 
-Uygulama çalıştırıldığında SQLite veri tabanı otomatik olarak oluşturulur.
-
 ---
 
 ## Veritabanı
 
 Veritabanı script dosyası:
 
-```text id="jlwmht"
+```text
 database/SQL_Script_Dosyası_EİTS.sql
 ```
