@@ -1,6 +1,6 @@
 # EİTS - Eczane İlaç Takip Sistemi
 
-EİTS (Eczane İlaç Takip Sistemi), Veritabanı Yönetim Sistemleri (VTYS) dersi kapsamında geliştirilmiş bir web tabanlı eczane otomasyon projesidir.
+EİTS (Eczane İlaç Takip Sistemi), Veri Tabanı Yönetim Sistemleri (VTYS) dersi kapsamında geliştirilmiş bir web tabanlı eczane otomasyon projesidir.
 
 Bu sistem; ilaç stok yönetimi, satış işlemleri, kullanıcı yönetimi, hasta kayıtları ve raporlama süreçlerini dijital ortamda yönetmek amacıyla geliştirilmiştir.
 
