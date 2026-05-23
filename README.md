@@ -36,11 +36,10 @@ Bu sistem; ilaç stok yönetimi, satış işlemleri, kullanıcı yönetimi, hast
 ```text
 EITS/
 ├── database/        → SQL script dosyaları
-├── docs/            → Proje raporu ve sunum dosyaları
 ├── src/             → Uygulama kaynak kodları
-├── requirements.txt
+├── .gitignore
 ├── README.md
-└── .gitignore
+└── requirements.txt 
 ```
 
 ---
@@ -95,16 +94,8 @@ Veritabanı script dosyası:
 database/SQL_Script_Dosyası_EİTS.sql
 ```
 
-Bu dosya, VTYS proje gereksinimleri kapsamında eklenmiştir.
-
 ---
 
 ## Akademik Amaç
 
-Bu proje, VTYS dersi kapsamında:
-
-* ilişkisel veri tabanı tasarımı,
-* tablo ilişkileri,
-* veri bütünlüğü,
-* kullanıcı yönetimi
-  ve temel web uygulama geliştirme süreçlerini uygulamalı olarak göstermek amacıyla hazırlanmıştır.
+Bu proje, VTYS dersi kapsamında ilişkisel veri tabanı yapıları ve temel web uygulama geliştirme süreçlerini uygulamalı olarak göstermek amacıyla hazırlanmıştır.
