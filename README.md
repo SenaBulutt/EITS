@@ -26,8 +26,10 @@ Bu sistem; ilaç stok yönetimi, satış işlemleri, kullanıcı yönetimi, hast
 * Flask
 * SQLite
 * SQLAlchemy
-* HTML / CSS
+* HTML / CSS / JavaScript
 * Jinja2
+* Werkzeug Security
+* SMTP (Gmail entegrasyonu)
 
 ---
 
