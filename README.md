@@ -16,7 +16,7 @@ Bu sistem; ilaç stok yönetimi, satış işlemleri, kullanıcı yönetimi, hast
 * Hasta kayıt sistemi
 * Dashboard ve log sistemi
 * Düşük stok ve son kullanma tarihi takibi
-* SQL tabanlı ilişkisel veritabanı yapısı
+* SQL tabanlı ilişkisel veri tabanı yapısı
 
 ---
 
@@ -83,7 +83,7 @@ python src/app.py
 python3 src/app.py
 ```
 
-Uygulama çalıştırıldığında SQLite veritabanı otomatik olarak oluşturulur.
+Uygulama çalıştırıldığında SQLite veri tabanı otomatik olarak oluşturulur.
 
 ---
 
@@ -103,7 +103,7 @@ Bu dosya, VTYS proje gereksinimleri kapsamında eklenmiştir.
 
 Bu proje, VTYS dersi kapsamında:
 
-* ilişkisel veritabanı tasarımı,
+* ilişkisel veri tabanı tasarımı,
 * tablo ilişkileri,
 * veri bütünlüğü,
 * kullanıcı yönetimi
