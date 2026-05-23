@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EİTS - Kod Doğrulama</title>
+    <style>
+        * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+        body { margin: 0; height: 100vh; background: linear-gradient(135deg, #6d6adf, #7c6fd6); display: flex; align-items: center; justify-content: center; }
+        .reset-wrapper { width: 100%; max-width: 420px; background: white; border-radius: 22px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
+        .reset-header { background: linear-gradient(135deg, #7c6fd6, #6d6adf); padding: 30px; text-align: center; color: white; }
+        .reset-body { padding: 30px; }
+        .error { background: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 10px; margin-bottom: 15px; }
+        .success { background: #d1fae5; color: #065f46; padding: 12px; border-radius: 10px; margin-bottom: 15px; }
+        label { font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px; }
+        input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 15px; text-align: center; font-size: 18px; letter-spacing: 3px; }
+        .btn { width: 100%; padding: 13px; background: linear-gradient(135deg, #6d6adf, #7c6fd6); color: white; border: none; border-radius: 16px; font-weight: 700; cursor: pointer; }
+        .footer { text-align: center; padding: 20px; }
+        .footer a { color: #2563eb; font-weight: 600; text-decoration: none; }
+        #loading { display: none; text-align: center; color: #6b7280; margin: 10px 0; }
+        .info-box { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 12px; margin-bottom: 15px; border-radius: 8px; font-size: 13px; }
+        .code-inputs { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        .code-input { width: 45px; height: 55px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #cbd5e1; border-radius: 10px; }
+        .code-input:focus { border-color: #6d6adf; outline: none; box-shadow: 0 0 0 2px rgba(109,106,223,0.2); }
+        .timer { text-align: center; color: #6b7280; font-size: 13px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="reset-wrapper">
+        <div class="reset-header">
+            <h1>EİTS</h1>
+            <p>Kod Doğrulama</p>
+        </div>
+        
+        <div class="reset-body">
+            <div class="info-box">
+                📧 E-postanıza gönderilen 6 haneli kodu girin.
+                Kod 10 dakika geçerlidir.
+            </div>
+            
+            <div class="timer" id="timer">Kalan süre: 10:00</div>
+            
+            <form id="verifyForm">
+                <label>6 Haneli Kod</label>
+                <div class="code-inputs">
+                    <input type="text" maxlength="1" class="code-input" data-index="1" oninput="moveToNext(this, 2)" onkeyup="handleCodeInput(event, this)" autocomplete="off">
+                    <input type="text" maxlength="1" class="code-input" data-index="2" oninput="moveToNext(this, 3)" onkeyup="handleCodeInput(event, this)" autocomplete="off">
+                    <input type="text" maxlength="1" class="code-input" data-index="3" oninput="moveToNext(this, 4)" onkeyup="handleCodeInput(event, this)" autocomplete="off">
+                    <input type="text" maxlength="1" class="code-input" data-index="4" oninput="moveToNext(this, 5)" onkeyup="handleCodeInput(event, this)" autocomplete="off">
+                    <input type="text" maxlength="1" class="code-input" data-index="5" oninput="moveToNext(this, 6)" onkeyup="handleCodeInput(event, this)" autocomplete="off">
+                    <input type="text" maxlength="1" class="code-input" data-index="6" onkeyup="handleCodeInput(event, this)" autocomplete="off">
+                </div>
+                <input type="hidden" id="fullCode" name="reset_code">
+                
+                <div id="loading">⏳ Kod doğrulanıyor...</div>
+                <div id="message"></div>
+                
+                <button type="button" class="btn" onclick="verifyCode()">Kodu Doğrula</button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <button type="button" onclick="resendCode()" style="background: none; border: none; color: #2563eb; cursor: pointer; font-size: 13px;">
+                    📨 Kodu tekrar gönder
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a href="{{ url_for('reset_page') }}">↩️ Geri Dön</a>
+        </div>
+    </div>
+    
+    <script>
+        let timerSeconds = 600;
+        let timerInterval;
+        
+        // Timer başlat
+        startTimer();
+        
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerSeconds = 600;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer').innerHTML = '<span style="color:#ef4444">⏰ Kodun süresi doldu!</span>';
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('timer').textContent = `Kalan süre: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function moveToNext(input, nextIndex) {
+            if (input.value.length === 1) {
+                const nextInput = document.querySelector(`.code-input[data-index="${nextIndex}"]`);
+                if (nextInput) {
+                    nextInput.focus();
+                }
+                updateFullCode();
+            }
+        }
+        
+        function handleCodeInput(event, input) {
+            // Sadece rakamlara izin ver
+            if (event.key.length === 1 && !/\d/.test(event.key)) {
+                input.value = '';
+                event.preventDefault();
+                return;
+            }
+            
+            // Backspace için
+            if (event.key === 'Backspace' && input.value === '') {
+                const prevIndex = parseInt(input.dataset.index) - 1;
+                const prevInput = document.querySelector(`.code-input[data-index="${prevIndex}"]`);
+                if (prevInput) {
+                    prevInput.focus();
+                    prevInput.value = '';
+                }
+            }
+            
+            updateFullCode();
+        }
+        
+        function updateFullCode() {
+            const inputs = document.querySelectorAll('.code-input');
+            let fullCode = '';
+            inputs.forEach(input => {
+                fullCode += input.value;
+            });
+            document.getElementById('fullCode').value = fullCode;
+        }
+        
+        async function verifyCode() {
+            const inputs = document.querySelectorAll('.code-input');
+            let fullCode = '';
+            inputs.forEach(input => {
+                fullCode += input.value;
+            });
+            
+            const messageDiv = document.getElementById('message');
+            const loadingDiv = document.getElementById('loading');
+            
+            if (fullCode.length !== 6) {
+                messageDiv.innerHTML = '<div class="error">Lütfen 6 haneli kodu tam olarak girin</div>';
+                return;
+            }
+            
+            loadingDiv.style.display = 'block';
+            messageDiv.innerHTML = '';
+            
+            const formData = new FormData();
+            formData.append('reset_code', fullCode);
+            
+            try {
+                const response = await fetch('/verify_reset_code', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    body: formData
+                });
+                
+                const result = await response.json();
+                loadingDiv.style.display = 'none';
+                
+                console.log("Server response:", result);
+                
+                if (result.success) {
+                    messageDiv.innerHTML = `<div class="success">✅ ${result.message}</div>`;
+                    
+                    // 1.5 saniye sonra yeni şifre sayfasına yönlendir
+                    setTimeout(() => {
+                        window.location.href = "/reset_password_page_final";
+                    }, 1500);
+                } else {
+                    messageDiv.innerHTML = `<div class="error">❌ ${result.error}</div>`;
+                    // Hata durumunda input'ları temizle
+                    document.querySelectorAll('.code-input').forEach(input => input.value = '');
+                    document.querySelector('.code-input[data-index="1"]').focus();
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                console.error("Fetch error:", error);
+                messageDiv.innerHTML = '<div class="error">❌ Sunucu hatası. Lütfen tekrar deneyin.</div>';
+            }
+        }
+        
+        async function resendCode() {
+            const username = localStorage.getItem('resetUsername');
+            const email = localStorage.getItem('resetEmail');
+            
+            if (!username || !email) {
+                document.getElementById('message').innerHTML = '<div class="error">❌ Bilgiler bulunamadı. Lütfen baştan başlayın.</div>';
+                setTimeout(() => {
+                    window.location.href = "/reset_page";
+                }, 2000);
+                return;
+            }
+            
+            const loadingDiv = document.getElementById('loading');
+            const messageDiv = document.getElementById('message');
+            
+            loadingDiv.style.display = 'block';
+            messageDiv.innerHTML = '';
+            
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('email', email);
+            
+            try {
+                const response = await fetch('/reset_request', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                loadingDiv.style.display = 'none';
+                
+                if (result.success) {
+                    messageDiv.innerHTML = `<div class="success">✅ Yeni kod gönderildi!</div>`;
+                    // Timer'ı sıfırla
+                    startTimer();
+                } else {
+                    messageDiv.innerHTML = `<div class="error">❌ ${result.error}</div>`;
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                messageDiv.innerHTML = '<div class="error">❌ Bağlantı hatası</div>';
+            }
+        }
+        
+        // Enter tuşu ile gönder
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifyCode();
+            }
+        });
+    </script>
+</body>
+</html>

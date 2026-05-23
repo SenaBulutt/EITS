@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EİTS - Kayıt Ol</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #6d6adf, #7c6fd6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== ANA KART ===== */
+
+.register-wrapper {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+/* ===== ÜST MOR ALAN ===== */
+
+.register-header {
+    background: linear-gradient(135deg, #7c6fd6, #6d6adf);
+    padding: 42px 24px 36px;
+    text-align: center;
+    color: white;
+}
+
+.register-header h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.register-header p {
+    margin: 10px 0 0;
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+/* ===== FORM ===== */
+
+.register-body {
+    padding: 30px 30px 26px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #cbd5f5;
+    background: #f9fafb;
+    font-size: 14px;
+    margin-bottom: 14px;
+    transition: 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #6d6adf;
+    box-shadow: 0 0 0 2px rgba(109,106,223,0.35);
+}
+
+/* ===== BUTON ===== */
+
+.btn-register {
+    width: 100%;
+    background: linear-gradient(135deg, #6d6adf, #7c6fd6);
+    color: white;
+    border: none;
+    padding: 13px 0;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #4f46e5;
+    transition: 0.15s ease;
+    margin-top: 10px;
+}
+
+.btn-register:hover {
+    transform: translateY(1px);
+    box-shadow: 0 3px 0 #4f46e5;
+}
+
+/* ===== HATA ===== */
+
+.error {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+/* ===== ALT LİNK ===== */
+
+.register-footer {
+    text-align: center;
+    padding: 18px 0 24px;
+}
+
+.register-footer a {
+    font-size: 14px;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.register-footer a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="register-wrapper">
+
+    <!-- ÜST MOR KISIM -->
+    <div class="register-header">
+        <h1>EİTS</h1>
+        <p>Eczane İlaç Takip Sistemi</p>
+        <p style="margin-top:8px;">
+            Hoşgeldiniz<br>
+            Yeni hesap oluşturun
+        </p>
+    </div>
+
+    <!-- FORM -->
+    <div class="register-body">
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/register">
+
+            <label>Kullanıcı Adı</label>
+            <input type="text" name="new_username"
+                   placeholder="Kullanıcı adınızı girin" required>
+
+            <label>E-posta</label>
+            <input type="email" name="email"
+                   placeholder="ornek@gmail.com" required>
+
+            <label>Şifre</label>
+            <input type="password" name="new_password"
+                   placeholder="Şifrenizi girin" required>
+
+            <button type="submit" class="btn-register">Kayıt Ol</button>
+
+        </form>
+    </div>
+
+    <!-- ALT -->
+    <div class="register-footer">
+        <a href="{{ url_for('index') }}">Giriş Ekranına Geri Dön</a>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EİTS - Giriş</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #6d6adf, #7c6fd6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== LOGIN KART ===== */
+
+.login-wrapper {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+/* ===== ÜST MOR ALAN ===== */
+
+.login-header {
+    background: linear-gradient(135deg, #7c6fd6, #6d6adf);
+    padding: 40px 20px 34px;
+    text-align: center;
+    color: white;
+}
+
+.login-header h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.login-header p {
+    margin: 10px 0 0;
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+/* ===== FORM ALANI ===== */
+
+.login-body {
+    padding: 30px 30px 26px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #cbd5f5;
+    background: #f9fafb;
+    font-size: 14px;
+    margin-bottom: 14px;
+    transition: 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #6d6adf;
+    box-shadow: 0 0 0 2px rgba(109,106,223,0.35);
+}
+
+/* ===== BENİ HATIRLA ===== */
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 18px;
+}
+
+.remember input {
+    width: auto;
+    margin: 0;
+}
+
+/* ===== GİRİŞ BUTONU ===== */
+
+.btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, #6d6adf, #7c6fd6);
+    color: white;
+    border: none;
+    padding: 13px 0;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #4f46e5;
+    transition: 0.15s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(1px);
+    box-shadow: 0 3px 0 #4f46e5;
+}
+
+/* ===== HATA ===== */
+
+.error {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+/* ===== ALT LİNKLER ===== */
+
+.login-footer {
+    text-align: center;
+    padding: 18px 0 24px;
+}
+
+.login-footer a {
+    font-size: 14px;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+.login-footer span {
+    margin: 0 10px;
+    color: #94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-wrapper">
+
+    <!-- ÜST MOR KISIM -->
+    <div class="login-header">
+        <h1>EİTS</h1>
+        <p>Eczane İlaç Takip Sistemi</p>
+        <p style="margin-top:8px;">Hoşgeldiniz<br>Lütfen kullanıcı bilgilerinizi giriniz.</p>
+    </div>
+
+    <!-- FORM -->
+    <div class="login-body">
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/login" autocomplete="on">
+
+
+            <label>Kullanıcı Adı</label>
+            <input type="text" name="username" placeholder="Kullanıcı adınızı girin"
+       autocomplete="username"
+       value="{{ remembered_username or '' }}"
+       required>
+
+
+            <label>Şifre</label>
+            <input type="password" name="password" placeholder="Şifrenizi girin"
+       autocomplete="current-password"
+       required>
+
+
+            <div class="remember">
+                <input type="checkbox" name="remember" id="remember"
+       {% if remembered_username %}checked{% endif %}>
+
+                <span>Beni Hatırla</span>
+            </div>
+
+            <button type="submit" class="btn-login">Giriş Yap</button>
+        </form>
+    </div>
+
+    <!-- ALT LİNKLER -->
+    <div class="login-footer">
+        <a href="{{ url_for('register_page') }}">Kayıt Ol</a>
+        <span>|</span>
+        <a href="{{ url_for('reset_page') }}">Şifremi Unuttum</a>
+    </div>
+
+</div>
+
+</body>
+</html>

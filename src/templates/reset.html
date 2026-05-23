@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EİTS - Şifre Sıfırlama</title>
+    <style>
+        * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+        body { margin: 0; height: 100vh; background: linear-gradient(135deg, #6d6adf, #7c6fd6); display: flex; align-items: center; justify-content: center; }
+        .reset-wrapper { width: 100%; max-width: 460px; background: white; border-radius: 22px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
+        .reset-header { background: linear-gradient(135deg, #7c6fd6, #6d6adf); padding: 40px 24px 34px; text-align: center; color: white; }
+        .reset-body { padding: 30px; }
+        .error { background: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 10px; margin-bottom: 15px; }
+        .success { background: #d1fae5; color: #065f46; padding: 12px; border-radius: 10px; margin-bottom: 15px; }
+        label { font-weight: 600; font-size: 14px; display: block; margin-bottom: 6px; }
+        input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 15px; }
+        .btn { width: 100%; padding: 13px; background: linear-gradient(135deg, #6d6adf, #7c6fd6); color: white; border: none; border-radius: 16px; font-weight: 700; cursor: pointer; }
+        .footer { text-align: center; padding: 20px; }
+        .footer a { color: #2563eb; font-weight: 600; text-decoration: none; }
+        #loading { display: none; text-align: center; color: #6b7280; margin: 10px 0; }
+        .info-box { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 12px; margin-bottom: 15px; border-radius: 8px; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="reset-wrapper">
+        <div class="reset-header">
+            <h1>EİTS</h1>
+            <p>Şifre Sıfırlama</p>
+        </div>
+        
+        <div class="reset-body">
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+            
+            {% if success %}
+            <div class="success">{{ success }}</div>
+            {% endif %}
+            
+            <div id="step1">
+                <p>Şifrenizi sıfırlamak için bilgilerinizi girin:</p>
+                
+                <form id="resetForm">
+                    <label>Kullanıcı Adı</label>
+                    <input type="text" id="username" name="username" placeholder="Kullanıcı adınız" required>
+                    
+                    <label>E-posta Adresi</label>
+                    <input type="email" id="email" name="email" placeholder="kayıtlı e-posta adresiniz" required>
+                    
+                    <div id="loading">⏳ E-posta gönderiliyor...</div>
+                    <div id="message"></div>
+                    
+                    <button type="button" class="btn" onclick="sendResetRequest()">Şifre Sıfırlama Kodu Gönder</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a href="{{ url_for('index') }}">↩️ Giriş Sayfasına Dön</a>
+        </div>
+    </div>
+    
+    <script>
+        async function sendResetRequest() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const messageDiv = document.getElementById('message');
+            const loadingDiv = document.getElementById('loading');
+            
+            if (!username || !email) {
+                messageDiv.innerHTML = '<div class="error">Lütfen tüm alanları doldurun</div>';
+                return;
+            }
+            
+            // Göster
+            loadingDiv.style.display = 'block';
+            messageDiv.innerHTML = '';
+            
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('email', email);
+            
+            try {
+                const response = await fetch('/reset_request', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                loadingDiv.style.display = 'none';
+                
+                if (result.success) {
+                    messageDiv.innerHTML = `<div class="success">✅ ${result.message}<br><strong>Kodunuz: </strong><span id="codeValue"></span><br>3 saniye sonra kod doğrulama sayfasına yönlendirileceksiniz...</div>`;
+                    
+                    // Form verilerini localStorage'a kaydet (kod tekrar gönderme için)
+                    localStorage.setItem('resetUsername', username);
+                    localStorage.setItem('resetEmail', email);
+                    
+                    // 3 saniye sonra kod doğrulama sayfasına yönlendir
+                    setTimeout(() => {
+                        window.location.href = "/reset_password_page";
+                    }, 3000);
+                } else {
+                    messageDiv.innerHTML = `<div class="error">❌ ${result.error}</div>`;
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                messageDiv.innerHTML = '<div class="error">❌ Bağlantı hatası. İnternetinizi kontrol edin.</div>';
+            }
+        }
+        
+        // Enter tuşu ile gönder
+        document.getElementById('email').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendResetRequest();
+        });
+    </script>
+</body>
+</html>
