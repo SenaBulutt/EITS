@@ -34,13 +34,13 @@ Bu sistem; ilaç stok yönetimi, satış işlemleri, kullanıcı yönetimi, hast
 
 ## Proje Yapısı
 
-```text
+```text id="8dlk8p"
 EITS/
 ├── database/        → SQL script dosyaları
 ├── src/             → Uygulama kaynak kodları
 ├── .gitignore
 ├── README.md
-└── requirements.txt 
+└── requirements.txt
 ```
 
 ---
@@ -49,7 +49,7 @@ EITS/
 
 ### Sanal ortam oluşturma
 
-```bash
+```bash id="9yikm4"
 # Windows
 python -m venv venv
 
@@ -59,7 +59,7 @@ python3 -m venv venv
 
 ### Sanal ortamı aktifleştirme
 
-```bash
+```bash id="ylfj8v"
 # Windows
 venv\Scripts\activate
 
@@ -69,13 +69,13 @@ source venv/bin/activate
 
 ### Gerekli bağımlılıkları yükleme
 
-```bash
+```bash id="w72cfi"
 pip install -r requirements.txt
 ```
 
 ### Uygulamayı çalıştırma
 
-```bash
+```bash id="w02f69"
 # Windows
 python src/app.py
 
@@ -91,12 +91,6 @@ Uygulama çalıştırıldığında SQLite veri tabanı otomatik olarak oluşturu
 
 Veritabanı script dosyası:
 
-```text
+```text id="jlwmht"
 database/SQL_Script_Dosyası_EİTS.sql
 ```
-
----
-
-## Akademik Amaç
-
-Bu proje, VTYS dersi kapsamında ilişkisel veri tabanı yapıları ve temel web uygulama geliştirme süreçlerini uygulamalı olarak göstermek amacıyla hazırlanmıştır.
