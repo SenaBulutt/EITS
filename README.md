@@ -29,7 +29,7 @@ Bu sistem; ilaç stok yönetimi, satış işlemleri, kullanıcı yönetimi, hast
 * HTML / CSS / JavaScript
 * Jinja2
 * Werkzeug Security
-* SMTP (Gmail entegrasyonu)
+* SMTP 
 
 ---
 
