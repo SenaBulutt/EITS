@@ -84,6 +84,11 @@ python3 src/app.py
 ```
 
 ---
+## Not:Projeyi çalıştırmadan önce app.py dosyasında bulunan aşağıdaki örnek değerler kullanıcı tarafından kendi bilgileri ile değiştirilmelidir:
+
+SECRET_KEY = "your_secret_key_here"
+EMAIL_HOST_USER = "your_email@gmail.com"
+EMAIL_HOST_PASSWORD = "your_gmail_app_password"
 
 ## Veritabanı
 
