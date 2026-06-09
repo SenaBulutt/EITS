@@ -84,6 +84,7 @@ python3 src/app.py
 ```
 
 ---
+
 ## App.py Üzerinde Yapılması Gereken Ayarlar
 
 Projeyi çalıştırmadan önce `app.py` dosyasında bulunan örnek güvenlik ve e-posta ayarları kullanıcı tarafından güncellenmelidir.
@@ -93,6 +94,9 @@ app.secret_key = "gizli-anahtar-degistirilmeli"
 
 SMTP_USERNAME = "KENDI_GMAIL_ADRESINIZ@gmail.com"
 SMTP_PASSWORD = "KENDI_GMAIL_APP_SIFRENIZ"
+```
+
+---
 
 ## Veritabanı
 
